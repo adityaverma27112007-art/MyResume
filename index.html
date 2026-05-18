@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aditya Verma — Curious Builder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #FAFAFA; --bg2: #F2F2F0; --fg: #111111; --fg2: #444444;
+      --fg3: #888888; --border: #DDDDD8; --card: #FFFFFF;
+      --tag-bg: #EDEDED; --tag-fg: #333333; --shadow: rgba(0,0,0,0.06);
+      --transition: 0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+    [data-theme="dark"] {
+      --bg: #0D0D0D; --bg2: #161616; --fg: #F5F5F0; --fg2: #AAAAAA;
+      --fg3: #666666; --border: #2A2A2A; --card: #1A1A1A;
+      --tag-bg: #252525; --tag-fg: #CCCCCC; --shadow: rgba(0,0,0,0.3);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Lora', Georgia, serif;
+      background: var(--bg); color: var(--fg);
+      transition: background var(--transition), color var(--transition);
+      line-height: 1.7; overflow-x: hidden;
+    }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.25rem 3rem; background: var(--bg);
+      border-bottom: 1px solid transparent;
+      transition: border-color var(--transition), background var(--transition);
+    }
+    nav.scrolled { border-bottom-color: var(--border); }
+    .nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1rem; color: var(--fg); text-decoration: none; letter-spacing: 0.02em; }
+    .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+    .nav-links a { font-family: 'Syne', sans-serif; font-size: 0.78rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg3); text-decoration: none; transition: color var(--transition); }
+    .nav-links a:hover { color: var(--fg); }
+    .theme-toggle { background: none; border: 1px solid var(--border); border-radius: 100px; padding: 0.4rem 0.9rem; cursor: pointer; color: var(--fg3); font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; transition: all var(--transition); display: flex; align-items: center; gap: 0.5rem; }
+    .theme-toggle:hover { border-color: var(--fg3); color: var(--fg); }
+
+    /* HERO */
+    #hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 4rem; padding: 8rem 3rem 4rem; max-width: 1200px; margin: 0 auto; }
+    .hero-text { display: flex; flex-direction: column; gap: 1.5rem; }
+    .hero-label { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--fg3); display: flex; align-items: center; gap: 0.75rem; }
+    .hero-label::before { content: ''; display: block; width: 2rem; height: 1px; background: var(--fg3); }
+    .hero-name { font-family: 'Syne', sans-serif; font-size: clamp(3rem, 7vw, 5.5rem); font-weight: 800; line-height: 1.0; color: var(--fg); letter-spacing: -0.03em; }
+    .hero-tagline { font-family: 'Lora', serif; font-style: italic; font-size: clamp(1.1rem, 2.5vw, 1.4rem); color: var(--fg2); font-weight: 400; }
+    .hero-desc { font-size: 0.95rem; color: var(--fg2); max-width: 480px; line-height: 1.8; }
+    .status-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--tag-bg); border-radius: 100px; padding: 0.35rem 0.9rem; font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--fg2); width: fit-content; }
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: #22C55E; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.5; transform:scale(1.3); } }
+    .hero-ctas { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .btn { font-family: 'Syne', sans-serif; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.65rem 1.4rem; border-radius: 100px; text-decoration: none; transition: all var(--transition); display: inline-flex; align-items: center; gap: 0.5rem; cursor: pointer; border: none; }
+    .btn-primary { background: var(--fg); color: var(--bg); }
+    .btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
+    .btn-outline { background: transparent; color: var(--fg); border: 1px solid var(--border); }
+    .btn-outline:hover { border-color: var(--fg); transform: translateY(-1px); }
+    .hero-photo-wrap { position: relative; display: flex; justify-content: flex-end; align-items: center; }
+    .hero-photo-frame { position: relative; width: clamp(260px, 35vw, 420px); aspect-ratio: 3/4; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); }
+    .hero-photo-frame img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+    .photo-deco { position: absolute; top: -1.5rem; right: -1.5rem; width: 100px; height: 100px; border: 1px solid var(--border); border-radius: 50%; opacity: 0.4; }
+    .photo-deco2 { position: absolute; bottom: 1.5rem; left: -1.5rem; width: 60px; height: 60px; background: var(--tag-bg); border-radius: 8px; opacity: 0.6; }
+
+    /* SECTIONS */
+    section { max-width: 1100px; margin: 0 auto; padding: 5rem 3rem; border-top: 1px solid var(--border); }
+    .section-header { display: flex; align-items: baseline; gap: 1.5rem; margin-bottom: 3.5rem; }
+    .section-num { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; letter-spacing: 0.12em; color: var(--fg3); text-transform: uppercase; flex-shrink: 0; }
+    .section-title { font-family: 'Syne', sans-serif; font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 700; color: var(--fg); letter-spacing: -0.02em; }
+    .section-line { flex: 1; height: 1px; background: var(--border); align-self: center; }
+
+    /* ABOUT */
+    .about-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 4rem; align-items: start; }
+    .about-text p { font-size: 1.05rem; color: var(--fg2); line-height: 1.85; margin-bottom: 1.2rem; }
+    .about-meta { display: flex; flex-direction: column; gap: 1.25rem; }
+    .meta-item { display: flex; flex-direction: column; gap: 0.25rem; }
+    .meta-label { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg3); }
+    .meta-value { font-size: 0.9rem; color: var(--fg); font-weight: 500; }
+
+    /* EDUCATION */
+    .edu-list { display: flex; flex-direction: column; gap: 1.25rem; }
+    .edu-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.75rem 2rem; display: grid; grid-template-columns: 1fr auto; gap: 0.5rem 2rem; align-items: start; transition: box-shadow var(--transition); }
+    .edu-card:hover { box-shadow: 0 4px 24px var(--shadow); }
+    .edu-school { font-family: 'Syne', sans-serif; font-size: 1.05rem; font-weight: 700; color: var(--fg); }
+    .edu-degree { font-size: 0.88rem; color: var(--fg2); margin-top: 0.2rem; }
+    .edu-years { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--fg3); text-align: right; padding-top: 0.15rem; }
+    .edu-grade { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: var(--fg); font-weight: 500; text-align: right; }
+
+    /* SKILLS */
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.25rem; }
+    .skill-group { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; }
+    .skill-group-title { font-family: 'Syne', sans-serif; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg3); margin-bottom: 1rem; }
+    .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .tag { background: var(--tag-bg); color: var(--tag-fg); border-radius: 6px; padding: 0.3rem 0.75rem; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; letter-spacing: 0.02em; }
+
+    /* PROJECTS */
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+    .project-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; display: flex; flex-direction: column; gap: 1rem; transition: box-shadow var(--transition), transform var(--transition); }
+    .project-card:hover { box-shadow: 0 8px 32px var(--shadow); transform: translateY(-3px); }
+    .project-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
+    .project-name { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--fg); }
+    .project-link { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--fg3); text-decoration: none; border: 1px solid var(--border); border-radius: 100px; padding: 0.25rem 0.7rem; transition: all var(--transition); white-space: nowrap; flex-shrink: 0; }
+    .project-link:hover { border-color: var(--fg3); color: var(--fg); }
+    .project-desc { font-size: 0.9rem; color: var(--fg2); line-height: 1.7; }
+    .project-features { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+    .project-features li { font-size: 0.85rem; color: var(--fg2); display: flex; gap: 0.6rem; align-items: flex-start; }
+    .project-features li::before { content: '→'; color: var(--fg3); font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; flex-shrink: 0; margin-top: 0.1rem; }
+    .placeholder-card { border-style: dashed; display: flex; justify-content: center; align-items: center; text-align: center; min-height: 220px; }
+
+    /* CERTIFICATIONS */
+    .cert-list { display: flex; flex-direction: column; gap: 1rem; }
+    .cert-item { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 1.4rem 1.75rem; display: flex; align-items: flex-start; gap: 1.25rem; transition: box-shadow var(--transition); }
+    .cert-item:hover { box-shadow: 0 4px 20px var(--shadow); }
+    .cert-icon { font-size: 1.5rem; flex-shrink: 0; line-height: 1; margin-top: 0.1rem; }
+    .cert-title { font-family: 'Syne', sans-serif; font-size: 0.95rem; font-weight: 600; color: var(--fg); }
+    .cert-body { font-size: 0.85rem; color: var(--fg2); margin-top: 0.2rem; line-height: 1.6; }
+
+    /* CONTACT */
+    .contact-inner { display: flex; flex-direction: column; gap: 2rem; max-width: 600px; }
+    .contact-desc { font-size: 1rem; color: var(--fg2); line-height: 1.8; }
+    .contact-links { display: flex; gap: 0.9rem; flex-wrap: wrap; }
+    .contact-link { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; color: var(--fg2); font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; border: 1px solid var(--border); border-radius: 8px; padding: 0.65rem 1.1rem; transition: all var(--transition); }
+    .contact-link:hover { border-color: var(--fg); color: var(--fg); }
+    .contact-link svg { width: 16px; height: 16px; fill: currentColor; flex-shrink: 0; }
+
+    footer { text-align: center; padding: 2.5rem 3rem; border-top: 1px solid var(--border); font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--fg3); letter-spacing: 0.06em; }
+
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s cubic-bezier(0.4,0,0.2,1), transform 0.6s cubic-bezier(0.4,0,0.2,1); }
+    .reveal.visible { opacity: 1; transform: none; }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      #hero { grid-template-columns: 1fr; padding: 6rem 1.5rem 3rem; text-align: center; gap: 3rem; }
+      .hero-label, .hero-ctas, .status-badge { justify-content: center; margin: 0 auto; }
+      .hero-desc { margin: 0 auto; }
+      .hero-photo-wrap { justify-content: center; order: -1; }
+      .hero-photo-frame { width: 220px; }
+      section { padding: 3.5rem 1.5rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .edu-card { grid-template-columns: 1fr; }
+      .edu-years, .edu-grade { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">AV</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#certifications">Achievements</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="theme-toggle" id="themeBtn">
+    <span id="themeIcon">☾</span><span id="themeLabel">Dark</span>
+  </button>
+</nav>
+
+<section id="hero" style="border-top:none;">
+  <div class="hero-text">
+    <div class="hero-label reveal">ML / AI / Data Science</div>
+    <h1 class="hero-name reveal reveal-delay-1">Aditya<br>Verma</h1>
+    <p class="hero-tagline reveal reveal-delay-2"><em>Curious Builder</em></p>
+    <div class="status-badge reveal reveal-delay-2">
+      <span class="status-dot"></span>Actively looking for opportunities
+    </div>
+    <p class="hero-desc reveal reveal-delay-3">
+      A first-year engineer at SRMIST, passionately exploring ML, game development,
+      and robotics — building across every domain to find where I thrive.
+    </p>
+    <div class="hero-ctas reveal reveal-delay-4">
+      <a href="https://github.com/adityaverma27112007-art/" target="_blank" class="btn btn-primary">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+        GitHub
+      </a>
+      <a href="https://www.linkedin.com/in/aditya-verma-577058320/" target="_blank" class="btn btn-outline">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        LinkedIn
+      </a>
+      <a href="https://user404notfound.itch.io/everythingisanillusion" target="_blank" class="btn btn-outline">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M3.125 1.063C2.032 1.687.01 4.337 0 4.656v.781c0 1 .844 1.875 1.594 1.875.906 0 1.688-.781 1.688-1.688 0 .907.75 1.688 1.656 1.688S6.594 6.53 6.594 5.624c0 .907.75 1.688 1.656 1.688.907 0 1.657-.781 1.657-1.688 0 .907.781 1.688 1.687 1.688.907 0 1.657-.781 1.657-1.688 0 .907.75 1.688 1.656 1.688.907 0 1.688-.781 1.688-1.688 0 .907.75 1.688 1.656 1.688.907 0 1.657-.781 1.657-1.688 0 .907.781 1.688 1.687 1.688C23.156 7.312 24 6.437 24 5.437v-.78c-.01-.32-2.032-2.97-3.125-3.594C19.813.5 3.875.594 3.125 1.063zm4.813 8.374c-.094 0-.188 0-.281.032-1.063.25-3.47 2.875-4.126 4.124-.53.938-.5 1.938-.5 3.126v3.5c0 2.437 1.875 3.718 5.188 3.718H11.5c3.344 0 5.157-1.28 5.157-3.719v-3.5c0-1.187.03-2.187-.5-3.125-.657-1.25-3.064-3.874-4.126-4.124-.094-.031-.188-.031-.281-.031-.157 0-.344.031-.469.062-.406.094-1.25.469-1.343.469s-.938-.375-1.344-.469c-.125-.031-.312-.062-.469-.062z"/></svg>
+        itch.io
+      </a>
+    </div>
+  </div>
+  <div class="hero-photo-wrap">
+    <div class="photo-deco"></div>
+    <div class="photo-deco2"></div>
+    <div class="hero-photo-frame reveal reveal-delay-1">
+      <!-- Standard local file fallback path for a standard JPG image -->
+      <img src="assets/profile.jpg" alt="Aditya Verma" loading="eager">
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="section-header">
+    <span class="section-num reveal">01</span>
+    <h2 class="section-title reveal reveal-delay-1">About</h2>
+    <div class="section-line reveal reveal-delay-2"></div>
+  </div>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p>I am a first-year B.Tech student in AI &amp; Machine Learning at SRMIST Kattankulathur, currently in the exciting phase of exploration — building across robotics, game development, and ML/AI to discover where my passion and skill truly intersect.</p>
+      <p>I believe in learning by doing. Every project, no matter how small, is a step toward becoming a better engineer. I actively work on diverse experiments and share every achievement along the way.</p>
+      <p>Currently <strong>actively looking for internships and opportunities</strong> where I can contribute meaningfully, learn fast, and grow alongside experienced teams.</p>
+    </div>
+    <div class="about-meta reveal reveal-delay-2">
+      <div class="meta-item"><span class="meta-label">Currently at</span><span class="meta-value">SRMIST Kattankulathur</span></div>
+      <div class="meta-item"><span class="meta-label">Degree</span><span class="meta-value">B.Tech — CSE (AI &amp; ML)</span></div>
+      <div class="meta-item"><span class="meta-label">Batch</span><span class="meta-value">2025 — 2029</span></div>
+      <div class="meta-item"><span class="meta-label">Focus Areas</span><span class="meta-value">ML / AI · Game Dev · Robotics</span></div>
+      <div class="meta-item"><span class="meta-label">Status</span><span class="meta-value" style="color:#22C55E;">● Open to Opportunities</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="section-header">
+    <span class="section-num reveal">02</span>
+    <h2 class="section-title reveal reveal-delay-1">Education</h2>
+    <div class="section-line reveal reveal-delay-2"></div>
+  </div>
+  <div class="edu-list">
+    <div class="edu-card reveal">
+      <div><div class="edu-school">SRM Institute of Science &amp; Technology</div><div class="edu-degree">B.Tech — Computer Science &amp; Engineering (AI &amp; ML)</div></div>
+      <div><div class="edu-years">2025 — 2029</div><div class="edu-grade">SGPA 8.8</div></div>
+    </div>
+    <div class="edu-card reveal reveal-delay-1">
+      <div><div class="edu-school">Salwan Public School, New Delhi</div><div class="edu-degree">Class XII — CBSE · Science Stream</div></div>
+      <div><div class="edu-years">2024</div><div class="edu-grade">80%</div></div>
+    </div>
+    <div class="edu-card reveal reveal-delay-2">
+      <div><div class="edu-school">Salwan Public School, New Delhi</div><div class="edu-degree">Class X — CBSE</div></div>
+      <div><div class="edu-years">2022</div><div class="edu-grade">82.3%</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="section-header">
+    <span class="section-num reveal">03</span>
+    <h2 class="section-title reveal reveal-delay-1">Skills</h2>
+    <div class="section-line reveal reveal-delay-2"></div>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-group reveal"><div class="skill-group-title">Languages</div><div class="tags"><span class="tag">Python</span><span class="tag">SQL</span><span class="tag">C++</span><span class="tag">C#</span></div></div>
+    <div class="skill-group reveal reveal-delay-1"><div class="skill-group-title">ML / AI Libraries</div><div class="tags"><span class="tag">PyTorch</span><span class="tag">OpenCV</span><span class="tag">NumPy</span><span class="tag">Pandas</span></div></div>
+    <div class="skill-group reveal reveal-delay-2"><div class="skill-group-title">Dev Tools</div><div class="tags"><span class="tag">Unity</span><span class="tag">VS Code</span><span class="tag">Git</span></div></div>
+    <div class="skill-group reveal reveal-delay-3"><div class="skill-group-title">Domains</div><div class="tags"><span class="tag">Robotics</span><span class="tag">Game Dev</span><span class="tag">Web Dev</span><span class="tag">ML / AI</span></div></div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="section-header">
+    <span class="section-num reveal">04</span>
+    <h2 class="section-title reveal reveal-delay-1">Projects</h2>
+    <div class="section-line reveal reveal-delay-2"></div>
+  </div>
+  <div class="projects-grid">
+    <div class="project-card reveal">
+      <div class="project-header">
+        <div class="project-name">Everything Is An Illusion</div>
+        <a href="https://user404notfound.itch.io/everythingisanillusion" target="_blank" class="project-link">itch.io ↗</a>
+      </div>
+      <p class="project-desc">A complete game developed and published for a college Game Jam. Built from scratch using Unity and C#, exploring perception and illusion as core game mechanics.</p>
+      <ul class="project-features">
+        <li>Developed entirely with Unity Engine &amp; C#</li>
+        <li>Competed in and won 2nd place at the college Game Jam</li>
+        <li>Published publicly on itch.io for anyone to play</li>
+      </ul>
+      <div class="tags" style="margin-top:0.5rem;"><span class="tag">Unity</span><span class="tag">C#</span><span class="tag">Game Dev</span></div>
+    </div>
+    <div class="project-card placeholder-card reveal reveal-delay-1">
+      <div style="color:var(--fg3);font-family:'JetBrains Mono',monospace;font-size:0.8rem;line-height:2.2;">
+        <div style="font-size:2rem;margin-bottom:0.5rem;opacity:0.4;">+</div>
+        More projects in progress<br>
+        <a href="https://github.com/adityaverma27112007-art/" target="_blank" style="color:inherit;font-size:0.7rem;text-decoration:underline;text-underline-offset:3px;">View GitHub for latest ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="certifications">
+  <div class="section-header">
+    <span class="section-num reveal">05</span>
+    <h2 class="section-title reveal reveal-delay-1">Achievements</h2>
+    <div class="section-line reveal reveal-delay-2"></div>
+  </div>
+  <div class="cert-list">
+    <div class="cert-item reveal">
+      <div class="cert-icon">🥈</div>
+      <div>
+        <div class="cert-title">2nd Prize — College Game Jam, SRMIST</div>
+        <div class="cert-body">Won second place in a game jam hosted at SRMIST. Designed, developed, and shipped a complete game in a limited time window using Unity and C#.</div>
+      </div>
+    </div>
+    <div class="cert-item reveal reveal-delay-1">
+      <div class="cert-icon">🏆</div>
+      <div>
+        <div class="cert-title">Smart India Hackathon — Cleared 2 Internal Rounds</div>
+        <div class="cert-body">Cleared 2 rounds of the internal Smart India Hackathon (SIH) selection process at SRMIST in 1st year itself, competing against senior teams across departments.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="section-header">
+    <span class="section-num reveal">06</span>
+    <h2 class="section-title reveal reveal-delay-1">Contact</h2>
+    <div class="section-line reveal reveal-delay-2"></div>
+  </div>
+  <div class="contact-inner reveal">
+    <p class="contact-desc">I am actively looking for internships, collaborative projects, and exciting opportunities. Whether you have a role, an idea, or just want to connect — reach out.</p>
+    <div class="contact-links">
+      <a href="https://github.com/adityaverma27112007-art/" target="_blank" class="contact-link">
+        <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+        GitHub
+      </a>
+      <a href="https://www.linkedin.com/in/aditya-verma-577058320/" target="_blank" class="contact-link">
+        <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        LinkedIn
+      </a>
+      <a href="https://user404notfound.itch.io/" target="_blank" class="contact-link">
+        <svg viewBox="0 0 24 24"><path d="M3.125 1.063C2.032 1.687.01 4.337 0 4.656v.781c0 1 .844 1.875 1.594 1.875.906 0 1.688-.781 1.688-1.688 0 .907.75 1.688 1.656 1.688S6.594 6.53 6.594 5.624c0 .907.75 1.688 1.656 1.688.907 0 1.657-.781 1.657-1.688 0 .907.781 1.688 1.687 1.688.907 0 1.657-.781 1.657-1.688 0 .907.75 1.688 1.656 1.688.907 0 1.688-.781 1.688-1.688 0 .907.75 1.688 1.656 1.688.907 0 1.657-.781 1.657-1.688 0 .907.781 1.688 1.687 1.688C23.156 7.312 24 6.437 24 5.437v-.78c-.01-.32-2.032-2.97-3.125-3.594C19.813.5 3.875.594 3.125 1.063zm4.813 8.374c-.094 0-.188 0-.281.032-1.063.25-3.47 2.875-4.126 4.124-.53.938-.5 1.938-.5 3.126v3.5c0 2.437 1.875 3.718 5.188 3.718H11.5c3.344 0 5.157-1.28 5.157-3.719v-3.5c0-1.187.03-2.187-.5-3.125-.657-1.25-3.064-3.874-4.126-4.124-.094-.031-.188-.031-.281-.031-.157 0-.344.031-.469.062-.406.094-1.25.469-1.343.469s-.938-.375-1.344-.469c-.125-.031-.312-.062-.469-.062z"/></svg>
+        itch.io
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>Designed &amp; built with ♥ by Aditya Verma &nbsp;·&nbsp; 2026</footer>
+
+<script>
+  const btn = document.getElementById("themeBtn");
+  const icon = document.getElementById("themeIcon");
+  const label = document.getElementById("themeLabel");
+  const html = document.documentElement;
+  btn.addEventListener("click", () => {
+    const isDark = html.getAttribute("data-theme") === "dark";
+    html.setAttribute("data-theme", isDark ? "light" : "dark");
+    icon.textContent = isDark ? "☾" : "☀";
+    label.textContent = isDark ? "Dark" : "Light";
+  });
+  const nav = document.getElementById("navbar");
+  window.addEventListener("scroll", () => { nav.classList.toggle("scrolled", window.scrollY > 40); });
+  const reveals = document.querySelectorAll(".reveal");
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("visible"); obs.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => { if (el.closest("#hero")) { el.classList.add("visible"); } else { obs.observe(el); } });
+</script>
+</body>
+</html>
