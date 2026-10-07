@@ -1,0 +1,75 @@
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 4rem;
+  align-items: flex-start;
+}
+
+/* ── Left ───────────────────────────────────────── */
+.message {
+  font-size: 1.25rem;
+  line-height: 1.7;
+  color: var(--muted-color);
+}
+
+/* ── Right ──────────────────────────────────────── */
+.right {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.emailRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.email {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1rem, 2.2vw, 1.5rem);
+  letter-spacing: -0.01em;
+  word-break: break-all;
+  transition: color 0.2s ease;
+}
+
+.email:hover {
+  color: var(--accent-color);
+}
+
+.copyBtn {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: var(--text-color);
+  color: var(--bg-color);
+  border: none;
+  padding: 0.45rem 0.9rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: opacity 0.2s ease;
+}
+
+.copyBtn:hover {
+  opacity: 0.8;
+}
+
+.social {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* ── Responsive ─────────────────────────────────── */
+@media (max-width: 768px) {
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+}

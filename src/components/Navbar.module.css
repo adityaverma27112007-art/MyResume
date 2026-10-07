@@ -1,0 +1,77 @@
+/* Fix 1: Navbar always has a solid background; no bleed-through */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  padding: 1.25rem 0;
+  background-color: var(--bg-color);
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.3s ease, padding 0.3s ease;
+}
+
+.scrolled {
+  padding: 0.9rem 0;
+  border-bottom-color: var(--border-color);
+}
+
+.navContainer {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.4rem;
+  letter-spacing: -0.04em;
+}
+
+.nav {
+  display: flex;
+  gap: 2.5rem;
+}
+
+.navLink {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted-color);
+  transition: color 0.2s ease;
+}
+
+.navLink:hover {
+  color: var(--text-color);
+}
+
+.themeToggle {
+  background: none;
+  border: 2px solid var(--border-color);
+  color: var(--muted-color);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  padding: 0.35rem 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.themeToggle:hover {
+  background: var(--text-color);
+  color: var(--bg-color);
+  border-color: var(--text-color);
+}
+
+@media (max-width: 768px) {
+  .nav {
+    display: none;
+  }
+}
