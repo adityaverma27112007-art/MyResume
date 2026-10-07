@@ -4,9 +4,9 @@
   min-height: 100vh;
   display: flex;
   align-items: center;
-  /* push content below fixed navbar */
-  padding-top: 6rem;
-  padding-bottom: 4rem;
+  justify-content: center;
+  /* optional spacing if needed */
+  padding: 0;
 }
 
 /* ── Two-column grid ─────────────────────────────── */

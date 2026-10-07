@@ -1,4 +1,17 @@
 :root {
+  --bg-color: #0d0d0d;
+  --text-color: #f4f4f0;
+  --accent-color: #ff6b6b;
+  --border-color: #444;
+  --muted-color: #999;
+  --surface-color: #1a1a1a;
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  /* Glassmorphism */
+  --glass-bg: rgba(255,255,255,0.08);
+  --glass-border: rgba(255,255,255,0.12);
+}
+
   --bg-color: #f4f4f0;
   --text-color: #111;
   --accent-color: #e63946;
@@ -78,7 +91,7 @@ a {
 
 section {
   padding: 7rem 0;
-  border-bottom: 2px solid var(--border-color);
+  border-bottom: none;
 }
 
 /* ── Section header shared style ───────────────────── */
